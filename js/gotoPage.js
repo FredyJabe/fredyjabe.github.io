@@ -3,8 +3,7 @@ function openInNewTab(url) {
 }
 
 function goToPage(url) {
-	if (url == 'main') window.open(decodeURIComponent(url) + '.php', '_self').focus();
-	else window.open(decodeURIComponent(url) + '.html', '_self').focus();
+	window.open(decodeURIComponent(url) + '.html', '_self').focus();
 }
 
 function goBack() {
