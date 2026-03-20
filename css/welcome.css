@@ -1,0 +1,32 @@
+img {
+    width: 100%;
+}
+
+.whatido {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.whatido .thing {
+    position: relative;
+    display: inline-block;
+
+    width: 47.5%;
+    padding: 1% 0;
+    margin: 1%;
+}
+
+.contact {
+    width: 50%;
+    float: left;
+}
+
+.contact.left {
+    display: inline-block;
+    text-align: right;
+}
+
+.contact.right {
+    display: inline-block;
+    text-align: left;
+}

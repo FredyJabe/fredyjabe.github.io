@@ -1,0 +1,108 @@
+<HTML>
+	<HEAD>
+		<TITLE>Webhook</TITLE>
+	</HEAD>
+	<BODY>
+		<TABLE style="border: 1px black;">
+			<TR>
+				<TD colspan="2"><H3 id="title">Envoi de message VIA Webhook</H3></TD>
+			<TR>
+			<TR>
+				<TD>
+					<SELECT id="target" size="5" style="width: 128px; height: 100%; border: none;">
+						<OPTION>Main (No Thread)</OPTION>
+						<OPTION>News</OPTION>
+						<OPTION>Général</OPTION>
+						<OPTION>Suggestions</OPTION>
+						<OPTION>Up to 1 000 000</OPTION>
+					</SELECT>
+				</TD>
+				<TD><TEXTAREA name="msg" id="msg" cols="80" rows="24"></TEXTAREA></TD>
+			<TR>
+			<TR>
+				<TD colspan="2">
+					<BUTTON style="width: 49.5%;" onclick="discordNewMessage();">Send</BUTTON>
+					<BUTTON style="width: 49.5%;" onclick="discordUpdateMessage();">Update</BUTTON>
+				</TD>
+			</TR>
+		</TABLE>
+		<BUTTON onclick="discordNewWebhook();">New Webhook</BUTTON>
+	</BODY>
+</HTML>
+
+<SCRIPT>
+	function discordNewMessage() {
+		var webhook = "https://discord.com/api/webhooks/941371998758653962/VdnAtfSJo8zkdt7916xS50mgt1oqr_gP0mcxAT0_iXPp7mlxO4mLzZl-0TSIDuwh5B9S";
+		var thread = "";
+		var isNews = false;
+	
+		var message = "\n" + document.getElementById('msg').value;
+		
+		switch(document.getElementById('target').value)
+		{
+			case "News": 
+				thread += "?thread_id=941376519148802129"; 
+				isNews = true;
+				break;
+			case "Général": thread += "?thread_id=941021362120704030"; break;
+			case "Suggestions": thread += "?thread_id=941022097822597212"; break;
+			case "Up to 1 000 000": thread += "?thread_id=941021656015589437"; break;
+		}
+		
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", webhook + thread, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+            'content': message,
+            'username':'La PouTeam',
+        }));
+		
+		if (isNews) {
+			discordUpdateMessage();
+		}
+    }
+	
+	function discordUpdateMessage() {
+		var webhook = "https://discord.com/api/webhooks/941371998758653962/VdnAtfSJo8zkdt7916xS50mgt1oqr_gP0mcxAT0_iXPp7mlxO4mLzZl-0TSIDuwh5B9S";
+		var thread = "";
+		var messageID = "959160074994089984";
+	
+		var message = "\n" + document.getElementById('msg').value;
+		var dateActuelle = new Date().toLocaleString();
+	
+		var xhr = new XMLHttpRequest();
+		xhr.open("PATCH", webhook + "/messages/" + messageID + thread, true);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+		"type": 3,
+		"name": "La PouTeam",
+		"id": "959164544385712179",
+		"application_id": "959164544385712179",
+  "content": "\u200B",
+  "tts": false,
+  "embeds": [
+    {
+      "type": "rich",
+      "title": "Chez vous",
+      "description": "Ici tu va t'sentir comme chez vous, c'est promis!\n\nFeel free d'explorer les divers Threads qu'on a pour discuter, sinon tu peux aussi cliquer sur les bouttons en bas pour accéder à mes liens sociaux et/ou le merch store de la PouTeam!!",
+      "color": 0x0048ff,
+      "fields": [
+        {
+          "name": "Les Threads",
+          "value": "[News](https://discord.com/channels/684608690506170386/941376519148802129) (" + dateActuelle + ")\n[Général](https://discord.com/channels/684608690506170386/941021362120704030)\n[Suggestions](https://discord.com/channels/684608690506170386/941022097822597212)\n[Up to 1 000 000](https://discord.com/channels/684608690506170386/941021656015589437)"
+        },
+        {
+          "name": "L'horaire de la semaine",
+          "value": "\u200B"
+        }
+      ],
+      "image": {
+        "url": "https://www.pouteam.ca/team/fredyjabe/images/horaire.png",
+        "height": 0,
+        "width": 0
+      }
+    }
+  ]
+        }));
+	}
+</SCRIPT>

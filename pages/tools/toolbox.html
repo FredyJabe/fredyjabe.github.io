@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <LINK rel="stylesheet" href="css/embeds.css">
+        <LINK rel="stylesheet" href="css/toolbox.css">
+        <LINK rel="stylesheet" href="css/mobile.css">
+
+        <LINK rel="preconnect" href="https://fonts.googleapis.com">
+        <LINK rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <LINK href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500&display=swap" rel="stylesheet">
+
+        <SCRIPT src="js/toolbox.js"></SCRIPT>
+    </HEAD>
+    <BODY>
+        <DIV>
+            <H1>Fredy's Toolbox</H1>
+            <DIV class="toolboxNavBar">
+                <DIV class="tabSelector" onclick="openTab('newBlogPost');">New Blog Post</DIV>
+                <DIV class="tabSelector" onclick="openTab('oldJams');">Add Old Jam</DIV>
+            </DIV>
+            <DIV>
+                <DIV class="tab" id="newBlogPost">
+                    <DIV>
+                        <FORM id="newPost" action="main.php?currentPage=blog" method="POST">
+                            <DIV class="title container">
+                                <DIV class="label">Post Title</DIV>
+                                <DIV class="content">
+                                    <INPUT name="title" type="text">
+                                </DIV>
+                            </DIV>
+                            <DIV class="body container">
+                                <DIV class="label">Post Body</DIV>
+                                <DIV class="content">
+                                    <TEXTAREA id="bodyText" name="content" form="newPost" oninput="updateHeight();">test</TEXTAREA>
+                                </DIV>
+                            </DIV>
+                            <DIV class="button" onclick="previewBlogPost();">Preview</DIV>
+                            <DIV class="button" onclick="document.forms[0].submit();">Publish</DIV>
+                        </FORM>
+                    </DIV>
+                    <DIV>
+                        <H3>Preview</H3>
+                        <DIV id="blogpostPreview"></DIV>
+                    </DIV>
+                </DIV>
+                <DIV class="tab" id="oldJams">
+                    <FORM id="addOldJam" action="main.php?currentPage=jabejam" method="POST">
+                        <DIV class="title container">
+                            <DIV class="label">Jam name (or number)</DIV>
+                            <DIV class="content">
+                                <INPUT name="jamId" type="text">
+                            </DIV>
+                        </DIV>
+                        <DIV class="body container">
+                            <DIV class="label">Themes</DIV>
+                            <DIV class="content themes">
+                                <INPUT name="t1" type="text">
+                                <INPUT name="t2" type="text">
+                                <INPUT name="t3" type="text">
+                            </DIV>
+                        </DIV>
+                        <DIV class="button" onclick="document.forms[1].submit();">Add</DIV>
+                    </FORM>
+                </DIV>
+            </DIV>
+        </DIV>
+    </BODY>
+</HTML>
+
+<SCRIPT>openTab('newBlogPost');</SCRIPT>

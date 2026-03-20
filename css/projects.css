@@ -1,0 +1,55 @@
+.project {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+
+    z-index: 0;
+  }
+  
+.project:hover {
+    transform: scale(1.3, 1.3);
+
+    z-index: 1;
+}
+
+  /* Tooltip text */
+  .project .tooltip {
+    visibility: hidden;
+    width: 180px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: rbga(255, 255, 255, 1);
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+   
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 2;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .project:hover .tooltip {
+    visibility: visible;
+  }
+
+  .project .thumbnail {
+    width: 180px;
+    height: 180px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 10px;
+  }
+
+.canclick:hover {
+    cursor: pointer;
+}
+
+/* Projets en cours */
+#coding { background-image: url('https://st.depositphotos.com/1003924/2502/i/600/depositphotos_25021863-stock-photo-html-web-code.jpg'); }
+/* Projets à venir */
+#marcfaitdesvues { background-image: url('https://st.depositphotos.com/1003924/2502/i/600/depositphotos_25021863-stock-photo-html-web-code.jpg'); }
+#jabejam2 { background-image: url('https://i.ibb.co/LhS9Vcp/JabeJam2.png'); }
+/* Projets terminés */
+#spacetruckerpoutineinc { background-image: url('https://m.gjcdn.net/game-thumbnail/800/710843-cxbe3ra5-v4.jpg'); }
+#menrunner { background-image: url('https://m.gjcdn.net/game-thumbnail/700/711324-biuzcsx2-v4.png'); }

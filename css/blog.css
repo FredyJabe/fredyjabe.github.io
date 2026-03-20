@@ -1,0 +1,30 @@
+.blogBody {
+    display: flex;
+    flex-flow: row-reverse wrap-reverse;
+    justify-content: center;
+}
+
+.blogBody .card {
+    position: relative;
+    display: inline-block;
+
+    margin: 10px;
+    border-radius: 6px;
+
+    width: 220px;
+    height: 220px;
+    background-color: #101010;
+
+    z-index: 0;
+  }
+  
+.card:hover {
+    transform: scale(1.3, 1.3);
+    box-shadow:inset 0px 0px 0px 1px #FFFFFF;
+
+    z-index: 1;
+}
+
+.left {
+    text-align: left;
+}

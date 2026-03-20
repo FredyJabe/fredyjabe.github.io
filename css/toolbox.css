@@ -1,0 +1,47 @@
+.container {
+    display: grid;
+}
+
+.content input {
+    width: 100%;
+    background-color: #101010;
+    color: #FFFFFF;
+}
+
+.content .themes input {
+    width: 33%;
+    background-color: #101010;
+    color: #FFFFFF;
+}
+
+.content textarea {
+    width: 100%;
+    resize: none;
+    overflow: hidden;
+    background-color: #101010;
+    color: #FFFFFF;
+}
+
+.toolboxNavbar {
+    display: block;
+}
+
+.tabSelector {
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.tabSelector:hover {
+    color: #000000;
+    text-shadow: -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF;
+    transform: scale(1.15, 1.15);
+}
+
+.tab {
+    display: none;
+}
+
+.label {
+    text-align: left;
+}

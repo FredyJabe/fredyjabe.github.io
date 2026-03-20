@@ -1,0 +1,9 @@
+
+.button img {
+    float:left;
+    position: relative;
+    left: 35%;
+
+    width: 24px;
+    height: 24px;
+}
