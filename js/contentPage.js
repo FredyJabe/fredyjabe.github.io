@@ -8,10 +8,10 @@ function openContent(url) {
     switch(url)
     {
         case 'blog':
-            target = 'pages/blog.php';
+            target = 'pages/blog.html';
             break;
         case 'blog2':
-            target = 'pages/blog.php?listing=1';
+            target = 'pages/blog.html?listing=1';
         case 'jabejam':
             target = 'pages/jabejam.php';
             break;

@@ -7,5 +7,5 @@ function goToPage(url) {
 }
 
 function goBack() {
-	window.open('../blog.php', '_self').focus();
+	window.open('../blog.html', '_self').focus();
 }

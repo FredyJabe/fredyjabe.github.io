@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<HTML>
+    <HEAD>
+        <META charset="UTF-8">
+        <LINK rel="stylesheet" href="css/embeds.css">
+        <LINK rel="stylesheet" href="css/blog.css">
+        <LINK rel="stylesheet" href="css/mobile.css">
+
+        <LINK rel="preconnect" href="https://fonts.googleapis.com">
+        <LINK rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <LINK href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500&display=swap" rel="stylesheet">
+
+        <SCRIPT src="js/gotoPage.js"></SCRIPT>
+    </HEAD>
+    <BODY>
+        <H1 id="title">Le Blog</H1>
+        <DIV id="blogList"></DIV>
+
+        <SCRIPT>
+            // Update these if your repository owner/name or branch changes.
+            var BLOG_REPO_OWNER = "fredyjabe";
+            var BLOG_REPO_NAME = "fredyjabe.github.io";
+            var BLOG_REPO_BRANCH = "main";
+            var BLOG_REPO_DIR = "pages/posts";
+
+            function encodePath(path) {
+                return path
+                    .split("/")
+                    .map(function (segment) { return encodeURIComponent(segment); })
+                    .join("/");
+            }
+
+            function decodePostTitle(fileName) {
+                var stem = fileName.replace(/\.html$/i, "");
+                try {
+                    return decodeURIComponent(stem.replace(/\+/g, "%20"));
+                } catch (error) {
+                    return stem;
+                }
+            }
+
+            function openPost(path) {
+                var relativePath = path.replace(/^pages\//, "").replace(/\.html$/i, "");
+                if (typeof openContent === "function") {
+                    openContent(relativePath);
+                    return;
+                }
+
+                window.location.href = "/" + path;
+            }
+
+            function renderEmpty(message) {
+                var container = document.getElementById("blogList");
+                container.innerHTML = "<DIV><DIV><H2>" + message + "</H2></DIV></DIV>";
+            }
+
+            function renderPosts(posts, listingView) {
+                var container = document.getElementById("blogList");
+                var html = [];
+
+                if (!posts.length) {
+                    renderEmpty("Nothing has been posted yet.");
+                    return;
+                }
+
+                if (listingView) {
+                    html.push("<DIV>");
+                    posts.forEach(function (post) {
+                        var encodedListPath = encodeURIComponent(post.path);
+                        html.push("<DIV class=\"left button\" onclick=\"openPost(decodeURIComponent('" + encodedListPath + "'));\">" + decodePostTitle(post.name) + "</DIV>");
+                    });
+                    html.push("</DIV>");
+                } else {
+                    html.push("<DIV class=\"blogBody\">");
+                    posts.slice(0, 9).forEach(function (post) {
+                        var encodedCardPath = encodeURIComponent(post.path);
+                        html.push("<DIV class=\"card\" onclick=\"openPost(decodeURIComponent('" + encodedCardPath + "'));\">");
+                        html.push("<DIV><H2>" + decodePostTitle(post.name) + "</H2></DIV>");
+                        html.push("<DIV></DIV>");
+                        html.push("<DIV></DIV>");
+                        html.push("</DIV>");
+                    });
+                    html.push("</DIV>");
+
+                    if (posts.length > 9) {
+                        html.push("<DIV class=\"button\" onclick=\"window.location.search='?listing=1';\">List all posts</DIV>");
+                    }
+                }
+
+                container.innerHTML = html.join("");
+            }
+
+            async function loadPosts() {
+                var listingView = window.location.search.indexOf("listing=1") !== -1;
+                var apiUrl = "https://api.github.com/repos/"
+                    + BLOG_REPO_OWNER
+                    + "/"
+                    + BLOG_REPO_NAME
+                    + "/contents/"
+                    + encodePath(BLOG_REPO_DIR)
+                    + "?ref="
+                    + encodeURIComponent(BLOG_REPO_BRANCH);
+
+                try {
+                    var response = await fetch(apiUrl, {
+                        headers: {
+                            "Accept": "application/vnd.github+json"
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("GitHub API request failed with status " + response.status);
+                    }
+
+                    var entries = await response.json();
+                    if (!Array.isArray(entries)) {
+                        throw new Error("Unexpected response shape from GitHub API.");
+                    }
+
+                    var posts = entries
+                        .filter(function (entry) {
+                            return entry.type === "file" && /\.html$/i.test(entry.name);
+                        })
+                        .sort(function (a, b) {
+                            return b.name.localeCompare(a.name);
+                        });
+
+                    renderPosts(posts, listingView);
+                } catch (error) {
+                    console.error(error);
+                    renderEmpty("Could not load posts from GitHub right now.");
+                }
+            }
+
+            loadPosts();
+        </SCRIPT>
+    </BODY>
+</HTML>
