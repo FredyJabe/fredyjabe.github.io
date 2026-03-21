@@ -1,0 +1,42 @@
+{
+  "main": {
+    "nav": {
+      "home": "Home",
+      "blog": "Blog",
+      "projects": "Projects",
+      "socials": "Socials"
+    },
+    "footer": "Copyright 2022, FredyJabe, All rights reserved"
+  },
+  "index": {
+    "enter": "Click to enter"
+  },
+  "blog": {
+    "title": "The Blog",
+    "empty": "Nothing has been posted yet.",
+    "listAll": "List all posts",
+    "loadError": "Could not load posts right now.",
+    "backToList": "Back to blog list"
+  },
+    "welcome": {
+        "who": {
+            "title": "Who am I and what I do",
+            "p1": "Hey! I'm Fredy, a programmer and designer who started programming at around 8 years old! My tools are HTML, CSS, JavaScript, PHP, MySQL, C# and GML. I've always been interested in the creative side of programmation and my mid-term goal is to work as a Freelancer doing what I love.",
+            "p2": "My passion is to put in collaborative work, my tech and design skills to give my best for the projects I work on be successful.",
+            "p3": "These are the things im used to do, but i’m not shy of going outside to get experimental."
+        },
+        "programming": {
+            "title": "Programming",
+            "content": "A programmer’s job is to face and tame one by one the ideas and concepts of a project to make them a reality, taking care of the player interation with the game. Making sure everything is working as it's expected, from the smallest detail to the whole game world's logic. This is the main role I take on projects."
+        },
+        "localization": {
+            "title": "Localization",
+            "content": "Fluent in both English and French, I really like helping other devs with their localizations if I can. I care about the player to feel that they are playing your game in the source language. To get the context right, I'll ask questions to make sure everything goes toward the global vision."
+        },
+        "streaming": {
+            "title": "Streaming",
+            "content": "I tend to stream everything that I do when I work on my personnal projects. I think of streaming as a great way to both learn and socialize with the community."
+        },
+        "contact": "Contact me"
+    }
+}

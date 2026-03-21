@@ -5,6 +5,7 @@ function resizeIframe(obj) {
 function openContent(url) {
     var f = document.getElementById('contentEmbed');
     var target;
+    var isBlogPostPage = /^posts\//i.test(url);
     switch(url)
     {
         case 'blog':
@@ -12,6 +13,7 @@ function openContent(url) {
             break;
         case 'blog2':
             target = 'pages/blog.html?listing=1';
+            break;
         case 'jabejam':
             target = 'pages/jabejam.php';
             break;
@@ -31,6 +33,34 @@ function openContent(url) {
     }).then(function (html) {
         // This is the HTML from our response as a text string
         f.innerHTML = html;
+
+        if (isBlogPostPage) {
+            var autoBackButton = document.createElement('div');
+            autoBackButton.className = 'button';
+            autoBackButton.setAttribute('label-index', 'blog.backToList');
+            autoBackButton.textContent = typeof t === 'function' ? t('blog.backToList', 'Back to blog list') : 'Back to blog list';
+            autoBackButton.onclick = function () {
+                openContent('blog2');
+            };
+            f.insertBefore(autoBackButton, f.firstChild);
+        }
+
+        // Scripts inserted via innerHTML are inert, so re-create them to execute page logic.
+        var scripts = f.querySelectorAll('script');
+        scripts.forEach(function (oldScript) {
+            var newScript = document.createElement('script');
+
+            Array.from(oldScript.attributes).forEach(function (attribute) {
+                newScript.setAttribute(attribute.name, attribute.value);
+            });
+
+            newScript.text = oldScript.text;
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
+
+        if (typeof applyTranslations === 'function') {
+            applyTranslations(f);
+        }
     }).catch(function (err) {
         // There was an error
         console.warn('Something went wrong.', err);
@@ -39,7 +69,20 @@ function openContent(url) {
 
 function init()
 {
+    function updateLanguageButtonLabel() {
+        var buttonLang = document.getElementById('langSwitch');
+        if (!buttonLang || typeof getCurrentLanguage !== 'function') {
+            return;
+        }
+
+        buttonLang.textContent = getCurrentLanguage().toUpperCase();
+    }
+
     openContent('welcome');
+
+    if (typeof applyTranslations === 'function') {
+        applyTranslations(document);
+    }
 
     var buttonWelcome = document.getElementById('welcome');
     buttonWelcome.onclick = function() {
@@ -53,13 +96,20 @@ function init()
     buttonProjects.onclick = function() {
         openContent('projects');
     }
-    var buttonLinks = document.getElementById('calendar');
-    buttonLinks.onclick = function() {
-        openContent('calendar');
-    }
     var buttonLinks = document.getElementById('links');
     buttonLinks.onclick = function() {
         openContent('links');
+    }
+
+    var buttonLang = document.getElementById('langSwitch');
+    if (buttonLang && typeof setLanguage === 'function' && typeof getCurrentLanguage === 'function') {
+        updateLanguageButtonLabel();
+        buttonLang.onclick = function () {
+            var nextLanguage = getCurrentLanguage() === 'fr' ? 'en' : 'fr';
+            setLanguage(nextLanguage).then(function () {
+                updateLanguageButtonLabel();
+            });
+        };
     }
     var buttonJabejam = document.getElementById('jabejam');
     buttonJabejam.onclick = function() {
@@ -70,4 +120,8 @@ function init()
     buttonToolbox.onclick = function() {
         openContent('toolbox');
     }
+
+    document.addEventListener('languagechanged', function () {
+        updateLanguageButtonLabel();
+    });
 }

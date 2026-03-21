@@ -1,7 +1,7 @@
 html {
     text-align: center;
     background-color: #000000;
-    color: #FFFFFF;
+    color: #de6900;
 
     font-family: 'Big Shoulders Display', cursive;
     font-size: larger;
@@ -20,8 +20,8 @@ html {
 }
 
 .button:hover {
-    background-color: rgb(255, 255, 255);
-    color: rgb(0, 0, 0);
+    background-color: #de6900;
+    color: #000000;
     transform: scale(1, 1.1);
     font-weight: bold;
 }

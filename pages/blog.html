@@ -11,24 +11,14 @@
         <LINK href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500&display=swap" rel="stylesheet">
 
         <SCRIPT src="js/gotoPage.js"></SCRIPT>
+        <SCRIPT src="js/labels.js"></SCRIPT>
     </HEAD>
     <BODY>
-        <H1 id="title">Le Blog</H1>
+        <H1 id="title" label-index="blog.title">The Blog</H1>
         <DIV id="blogList"></DIV>
 
         <SCRIPT>
-            // Update these if your repository owner/name or branch changes.
-            var BLOG_REPO_OWNER = "fredyjabe";
-            var BLOG_REPO_NAME = "fredyjabe.github.io";
-            var BLOG_REPO_BRANCH = "main";
-            var BLOG_REPO_DIR = "pages/posts";
-
-            function encodePath(path) {
-                return path
-                    .split("/")
-                    .map(function (segment) { return encodeURIComponent(segment); })
-                    .join("/");
-            }
+            var BLOG_MANIFEST_PATH = "pages/posts/posts.json";
 
             function decodePostTitle(fileName) {
                 var stem = fileName.replace(/\.html$/i, "");
@@ -49,9 +39,60 @@
                 window.location.href = "/" + path;
             }
 
-            function renderEmpty(message) {
+            function getPostPath(post) {
+                if (post && typeof post.path === "string" && post.path.length > 0) {
+                    return post.path;
+                }
+
+                if (post && typeof post.name === "string" && post.name.length > 0) {
+                    return "pages/posts/" + post.name;
+                }
+
+                return "";
+            }
+
+            function getPostName(post) {
+                if (post && typeof post.name === "string" && post.name.length > 0) {
+                    return post.name;
+                }
+
+                var postPath = getPostPath(post);
+                return postPath.split("/").pop() || "";
+            }
+
+            function getPostTitle(post) {
+                if (post && typeof post.title === "string" && post.title.length > 0) {
+                    return post.title;
+                }
+
+                return decodePostTitle(getPostName(post));
+            }
+
+            function getPostDescription(post) {
+                if (post && typeof post.description === "string") {
+                    return post.description;
+                }
+
+                return "";
+            }
+
+            function parsePostDateMs(post) {
+                if (!post || !post.createdAt) {
+                    return 0;
+                }
+
+                var parsed = Date.parse(post.createdAt);
+                return Number.isFinite(parsed) ? parsed : 0;
+            }
+
+            function renderEmpty(message, translationKey) {
                 var container = document.getElementById("blogList");
-                container.innerHTML = "<DIV><DIV><H2>" + message + "</H2></DIV></DIV>";
+                var i18nKey = translationKey || "blog.empty";
+                container.innerHTML = "<DIV><DIV><H2 label-index=\"" + i18nKey + "\">" + message + "</H2></DIV></DIV>";
+
+                if (typeof applyTranslations === "function") {
+                    applyTranslations(container);
+                }
             }
 
             function renderPosts(posts, listingView) {
@@ -59,80 +100,88 @@
                 var html = [];
 
                 if (!posts.length) {
-                    renderEmpty("Nothing has been posted yet.");
+                    renderEmpty("Nothing has been posted yet.", "blog.empty");
                     return;
                 }
 
                 if (listingView) {
                     html.push("<DIV>");
                     posts.forEach(function (post) {
-                        var encodedListPath = encodeURIComponent(post.path);
-                        html.push("<DIV class=\"left button\" onclick=\"openPost(decodeURIComponent('" + encodedListPath + "'));\">" + decodePostTitle(post.name) + "</DIV>");
+                        var postPath = getPostPath(post);
+                        var encodedListPath = encodeURIComponent(postPath);
+                        html.push("<DIV class=\"left button\" onclick=\"openPost(decodeURIComponent('" + encodedListPath + "'));\">" + getPostTitle(post) + "</DIV>");
                     });
                     html.push("</DIV>");
                 } else {
                     html.push("<DIV class=\"blogBody\">");
                     posts.slice(0, 9).forEach(function (post) {
-                        var encodedCardPath = encodeURIComponent(post.path);
+                        var postPath = getPostPath(post);
+                        var encodedCardPath = encodeURIComponent(postPath);
                         html.push("<DIV class=\"card\" onclick=\"openPost(decodeURIComponent('" + encodedCardPath + "'));\">");
-                        html.push("<DIV><H2>" + decodePostTitle(post.name) + "</H2></DIV>");
-                        html.push("<DIV></DIV>");
+                        html.push("<DIV><H2>" + getPostTitle(post) + "</H2></DIV>");
+                        html.push("<DIV>" + getPostDescription(post) + "</DIV>");
                         html.push("<DIV></DIV>");
                         html.push("</DIV>");
                     });
                     html.push("</DIV>");
 
                     if (posts.length > 9) {
-                        html.push("<DIV class=\"button\" onclick=\"window.location.search='?listing=1';\">List all posts</DIV>");
+                        html.push("<DIV class=\"button\" onclick=\"window.location.search='?listing=1';\" label-index=\"blog.listAll\">List all posts</DIV>");
                     }
                 }
 
                 container.innerHTML = html.join("");
+
+                if (typeof applyTranslations === "function") {
+                    applyTranslations(container);
+                }
             }
 
             async function loadPosts() {
                 var listingView = window.location.search.indexOf("listing=1") !== -1;
-                var apiUrl = "https://api.github.com/repos/"
-                    + BLOG_REPO_OWNER
-                    + "/"
-                    + BLOG_REPO_NAME
-                    + "/contents/"
-                    + encodePath(BLOG_REPO_DIR)
-                    + "?ref="
-                    + encodeURIComponent(BLOG_REPO_BRANCH);
 
                 try {
-                    var response = await fetch(apiUrl, {
-                        headers: {
-                            "Accept": "application/vnd.github+json"
-                        }
-                    });
+                    var response = await fetch(BLOG_MANIFEST_PATH, { cache: "no-cache" });
 
                     if (!response.ok) {
-                        throw new Error("GitHub API request failed with status " + response.status);
+                        throw new Error("Blog manifest request failed with status " + response.status);
                     }
 
-                    var entries = await response.json();
-                    if (!Array.isArray(entries)) {
-                        throw new Error("Unexpected response shape from GitHub API.");
+                    var manifest = await response.json();
+                    if (!manifest || !Array.isArray(manifest.posts)) {
+                        throw new Error("Unexpected manifest format. Expected { posts: [] }.");
                     }
 
-                    var posts = entries
-                        .filter(function (entry) {
-                            return entry.type === "file" && /\.html$/i.test(entry.name);
+                    var posts = manifest.posts
+                        .filter(function (post) {
+                            return /\.html$/i.test(getPostPath(post));
                         })
                         .sort(function (a, b) {
-                            return b.name.localeCompare(a.name);
+                            var dateDelta = parsePostDateMs(b) - parsePostDateMs(a);
+                            if (dateDelta !== 0) {
+                                return dateDelta;
+                            }
+
+                            return getPostName(b).localeCompare(getPostName(a));
                         });
 
                     renderPosts(posts, listingView);
                 } catch (error) {
                     console.error(error);
-                    renderEmpty("Could not load posts from GitHub right now.");
+                    renderEmpty(
+                        typeof t === "function" ? t("blog.loadError", "Could not load posts right now.") : "Could not load posts right now.",
+                        "blog.loadError"
+                    );
                 }
             }
 
-            loadPosts();
+            if (typeof initI18n === "function") {
+                initI18n().then(function () {
+                    loadPosts();
+                });
+            } else {
+                loadPosts();
+            }
         </SCRIPT>
     </BODY>
 </HTML>

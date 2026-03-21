@@ -1,0 +1,10 @@
+{
+  "posts": [
+    {
+      "path": "pages/posts/New Blog.html",
+      "title": "New Blog",
+      "description": "First post in the new manifest-based blog system.",
+      "createdAt": "2026-03-20T00:00:00Z"
+    }
+  ]
+}

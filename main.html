@@ -20,32 +20,34 @@
 
         <SCRIPT src="js/contentPage.js"></SCRIPT>
         <SCRIPT src="js/gotoPage.js"></SCRIPT>
-        <SCRIPT src="js/toolbox.js"></SCRIPT>
+        <SCRIPT src="js/labels.js"></SCRIPT>
     </HEAD>
     <BODY>
         <TABLE>
             <TR id="navbar">
                 <TD id="logoNavbar"><IMG class="inlineImage" src="images/FJwhite.png"></TD>
                 <TD>
-                    <DIV class="navbarButton" id="welcome">Home</DIV>
-                    <DIV class="navbarButton" id="blog">Blog</DIV>
-                    <DIV class="navbarButton" id="projects">Projects</DIV>
-                    <DIV class="navbarButton" id="calendar">Calendar</DIV>
-                    <DIV class="navbarButton" id="links">Socials</DIV>
-                    <DIV class="navbarButton" id="jabejam">JabeJam</DIV>
-                    <DIV class="navbarButton" onclick="openInNewTab('https://www.PouTeam.ca');">#PouTeam</DIV>
+                    <DIV class="navbarButton" id="welcome" label-index="main.nav.home">Home</DIV>
+                    <DIV class="navbarButton" id="blog" label-index="main.nav.blog">Blog</DIV>
+                    <DIV class="navbarButton" id="projects" label-index="main.nav.projects">Projects</DIV>
+                    <DIV class="navbarButton" id="links" label-index="main.nav.socials">Socials</DIV>
+                    <DIV class="navbarButton" id="langSwitch">EN</DIV>
                 </TD>
             </TR>
             <TR id="content">
-                <TD colspan="2"><DIV id="contentEmbed"><!--<EMBED id="contentEmbed" type="text/html">--></DIV></TD>
+                <TD colspan="2"><DIV id="contentEmbed"></DIV></TD>
             </TR>
             <TR id="footer">
-                <TD colspan="2"><A id="tb">©</A> Copyright 2022, FredyJabe, All rights reserved</TD>
+                <TD colspan="2"><A id="tb">©</A> <SPAN label-index="main.footer">Copyright 2022, FredyJabe, All rights reserved</SPAN></TD>
             </TR>
         </TABLE>
     </BODY>
 </HTML>
 
-<SCRIPT>init();</SCRIPT>
+<SCRIPT>
+    initI18n().then(function () {
+        init();
+    });
+</SCRIPT>
 
 <SCRIPT data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="FredyJabe" data-description="Support me on Buy me a coffee!" data-message="" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></SCRIPT>
