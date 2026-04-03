@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ancrage Tatouage - Studio de tatouage Laurentides, Québec.">
+    <title>Ancrage Tatouage</title>
+
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="ancrage.css">
+</head>
+<body>
+    <div class="ambient" aria-hidden="true"></div>
+
+    <main class="shell">
+        <section class="card">
+            <header class="hero">
+                <div class="profile">
+                    <img src="images/logo_ancrage.png" alt="Ancrage logo">
+                </div>
+
+                <p class="intro">
+                    Contactez-nous pour votre prochaine pièce de tatouage. Studio professionnel au cœur des Laurentides avec un accueil personnalisé et des designs uniques.
+                </p>
+            </header>
+
+            <div class="carousel" aria-label="Image carousel">
+                <div class="carousel-view" aria-label="Current carousel image" tabindex="0">
+                    <img id="carouselImage" src="../images/FJwhite.png" alt="Ancrage sample artwork">
+                </div>
+                <div class="carousel-controls">
+                    <button id="prevBtn" aria-label="Previous image">◀</button>
+                    <span id="carouselCounter">1 / 4</span>
+                    <button id="nextBtn" aria-label="Next image">▶</button>
+                </div>
+                <p class="carousel-caption" id="carouselCaption">Découvrez notre style expérimental et la salle d'accueil.</p>
+            </div>
+
+            <div class="lightbox" id="lightbox" aria-hidden="true">
+                <div class="lightbox-backdrop" role="dialog" aria-modal="true" aria-label="Expanded image view">
+                    <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
+                    <img id="lightboxImage" src="" alt="Expanded carousel image">
+                    <p class="lightbox-caption" id="lightboxCaption"></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="links" aria-label="Main links">
+            <a class="link" href="tel:+14508482050">
+                <div class="link-badge">📞</div>
+                <div class="link-text">
+                    <strong>(450) 848-2050</strong>
+                    <span>Appeler le studio</span>
+                </div>
+                <div class="link-arrow">Call</div>
+            </a>
+
+            <a class="link" href="mailto:ancrage@outlook.com">
+                <div class="link-badge">✉️</div>
+                <div class="link-text">
+                    <strong>ancrage@outlook.com</strong>
+                    <span>Envoyer un courriel</span>
+                </div>
+                <div class="link-arrow">Mail</div>
+            </a>
+
+            <a class="link" href="https://www.facebook.com/ancragetatouage" target="_blank" rel="noreferrer noopener">
+                <div class="link-badge">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" width="28" height="28">
+                </div>
+                <div class="link-text">
+                    <strong>ancragetatouage</strong>
+                    <span>Facebook</span>
+                </div>
+                <div class="link-arrow">Visit</div>
+            </a>
+
+            <a class="link" href="https://www.instagram.com/ancrage_tatouage.official" target="_blank" rel="noreferrer noopener">
+                <div class="link-badge">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" alt="Instagram" width="28" height="28">
+                </div>
+                <div class="link-text">
+                    <strong>ancrage_tatouage.official</strong>
+                    <span>Instagram</span>
+                </div>
+                <div class="link-arrow">Visit</div>
+            </a>
+        </section>
+
+        <p class="footer-note">More blocks can be added here next: featured release, newsletter, embedded media, or support links.</p>
+    </main>
+
+    <script src="ancrage.js"></script>
+</body>
+</html>
