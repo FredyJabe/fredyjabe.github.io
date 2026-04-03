@@ -1,0 +1,44 @@
+main:
+  nav:
+    home: "Accueil"
+    blog: "Blog"
+    projects: "Projets"
+    socials: "Réseaux"
+  footer: "Copyright 2026, FredyJabe, Tous droits réservés"
+index:
+  enter: "Cliquez pour entrer"
+blog:
+  title: "Le Blog"
+  empty: "Aucun article n'a été publié pour le moment."
+  listAll: "Voir tous les articles"
+  loadError: "Impossible de charger les articles pour le moment."
+  backToList: "Retour à la liste des posts"
+welcome:
+  who:
+    title: "Qui suis-je et que fais-je"
+    p1: "Salut! Je suis Fredy, un programmeur et designer qui a commencé à programmer vers l'âge de 8 ans! Mes outils sont HTML, CSS, JavaScript, PHP, MySQL, C# et GML. J'ai toujours été intéressé par le côté créatif de la programmation et mon objectif à moyen terme est de travailler en tant que freelance en faisant ce que j'aime."
+    p2: "Ma passion est de mettre en œuvre un travail collaboratif, mes compétences techniques et de conception pour donner le meilleur de moi-même afin que les projets sur lesquels je travaille soient réussis."
+    p3: "Ce sont les choses que j'ai l'habitude de faire, mais je n'ai pas peur de sortir de ma zone de confort pour expérimenter."
+  programming:
+    title: "Programmation"
+    content: "Le travail d'un programmeur consiste à affronter et dompter une par une les idées et les concepts d'un projet pour les rendre réalité, en prenant soin de l'interaction du joueur avec le jeu. S'assurer que tout fonctionne comme prévu, du moindre détail à la logique du monde entier du jeu. C'est le rôle principal que j'assume dans les projets."
+  localization:
+    title: "Localisation"
+    content: "Parlant couramment l'anglais et le français, j'aime vraiment aider les autres développeurs avec leurs localisations si je le peux. Je tiens à ce que le joueur ait l'impression de jouer à votre jeu dans la langue source. Pour obtenir le contexte correct, je poserai des questions pour m'assurer que tout va dans la vision globale."
+  streaming:
+    title: "Streaming"
+    content: "J'ai tendance à streamer tout ce que je fais lorsque je travaille sur mes projets personnels. Je considère le streaming comme un excellent moyen à la fois d'apprendre et de socialiser avec la communauté."
+  contact: "Contactez-moi"
+projects:
+  current:
+    title: "Projets en cours"
+    siteWeb: "Site Web"
+    mmo: "MMO"
+  incoming:
+    title: "Projets à venir"
+    websiteForClient: "Site Web pour un client"
+  others:
+    title: "Autres"
+    spaceTruckerPoutineInc: "Space Trucker Poutine Inc."
+    cursedSurvival: "Cursed Survival"
+    menRunner: "MenRunner"

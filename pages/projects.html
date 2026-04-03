@@ -12,33 +12,37 @@
         <SCRIPT src="js/gotoPage.js"></SCRIPT>
     </HEAD>
     <BODY>
-        <H1>Current Projects</H1>
+        <H1 label-index="projects.current.title"></H1>
         <DIV>
             <DIV class="project">
-                <DIV class="tooltip">Site Web</DIV>
+                <DIV class="tooltip" label-index="projects.current.siteWeb"></DIV>
                 <DIV class="thumbnail" id="coding"></DIV>
             </DIV>
-            <DIV class="project canclick" onclick="openInNewTab('https://gamejolt.com/games/menrunner/711324');">
-                <DIV class="tooltip">MenRunner</DIV>
-                <DIV class="thumbnail" id="menrunner"></DIV>
+            <DIV class="project">
+                <DIV class="tooltip" label-index="projects.current.mmo"></DIV>
+                <DIV class="thumbnail" id="coding"></DIV>
             </DIV>
         </DIV>
-        <H1>Incoming Projects</H1>
+        <H1 label-index="projects.incoming.title"></H1>
         <DIV>
-            <DIV class="project canclick" onclick="openInNewTab('http://jams.gamejolt.io/jabejam2');">
-                <DIV class="tooltip">JabeJam 2</DIV>
-                <DIV class="thumbnail" id="jabejam2"></DIV>
-            </DIV>
             <DIV class="project">
-                <DIV class="tooltip">Website for a client</DIV>
+                <DIV class="tooltip" label-index="projects.incoming.websiteForClient"></DIV>
                 <DIV class="thumbnail" id="marcfaitdesvues"></DIV>
             </DIV>
         </DIV>
-        <H1>Others</H1>
+        <H1 label-index="projects.others.title"></H1>
         <DIV>
             <DIV class="project canclick" onclick="openInNewTab('https://gamejolt.com/games/jabejam1/710843');">
-                <DIV class="tooltip">Space Trucker Poutine Inc.</DIV>
+                <DIV class="tooltip" label-index="projects.others.spaceTruckerPoutineInc"></DIV>
                 <DIV class="thumbnail" id="spacetruckerpoutineinc"></DIV>
+            </DIV>
+            <DIV class="project canclick" onclick="openInNewTab('https://gamejolt.com/games/CursedSurvival/722614');">
+                <DIV class="tooltip" label-index="projects.others.cursedSurvival"></DIV>
+                <DIV class="thumbnail" id="cursedsurvival"></DIV>
+            </DIV>
+            <DIV class="project canclick" onclick="openInNewTab('https://gamejolt.com/games/menrunner/711324');">
+                <DIV class="tooltip" label-index="projects.others.menRunner"></DIV>
+                <DIV class="thumbnail" id="menrunner"></DIV>
             </DIV>
         </DIV>
     </BODY>
