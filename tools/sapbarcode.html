@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>SAP Barcode Extractor</title>
+
+  <!-- PDF.js -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <!-- JsBarcode -->
+
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background: #f8f9fb;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    /* Drag zone */
+    #dropZone {
+      border: 2px dashed #aaa;
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      color: #666;
+      background: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    #dropZone.hover {
+      border-color: #007bff;
+      background: #eef5ff;
+      color: #007bff;
+    }
+
+    input {
+      display: none;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin-top: 25px;
+      width: 100%;
+      background: white;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    th {
+      background: #f1f3f5;
+    }
+
+    svg {
+      height: 75px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <h2>SAP PDF → Barcode Preview</h2>
+
+  <div id="dropZone">
+    Glisse ton PDF ici ou clique pour sélectionner
+  </div>
+
+  <input type="file" id="fileInput" accept="application/pdf" />
+
+  <div id="tableContainer"></div>
+
+  <script>
+    const dropZone = document.getElementById("dropZone");
+    const fileInput = document.getElementById("fileInput");
+    let results = [];
+
+    // Click to open file dialog
+    dropZone.addEventListener("click", () => fileInput.click());
+
+    // Drag events
+    dropZone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropZone.classList.add("hover");
+    });
+
+    dropZone.addEventListener("dragleave", () => {
+      dropZone.classList.remove("hover");
+    });
+
+    dropZone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropZone.classList.remove("hover");
+      handleFile(e.dataTransfer.files[0]);
+    });
+
+    fileInput.addEventListener("change", (e) => {
+      handleFile(e.target.files[0]);
+    });
+
+    async function handleFile(file) {
+      if (!file || file.type !== "application/pdf") {
+        alert("Fichier PDF requis");
+        return;
+      }
+
+      dropZone.innerText = "Traitement en cours...";
+      await process(file);
+      dropZone.innerText = "Chargé ✔ (dépose un autre fichier si besoin)";
+    }
+
+    async function process(file) {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+
+      let fullText = "";
+
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        const strings = content.items.map(item => item.str);
+        fullText += strings.join(" ") + "\n";
+      }
+
+      const regex = /(\d{8,14})\s+(\d{8,14})/g;
+
+      const temp = [];
+      let match;
+
+      while ((match = regex.exec(fullText)) !== null) {
+        temp.push([match[1], match[2]]);
+      }
+
+      // Remove duplicates
+      const unique = new Map();
+      temp.forEach(r => unique.set(r[0] + r[1], r));
+      results = [...unique.values()];
+
+      renderTable();
+    }
+
+    function renderTable() {
+      const container = document.getElementById("tableContainer");
+
+      let html = "<table>";
+      html += "<tr><th>Article Number</th><th>UPC</th><th>Barcode</th></tr>";
+
+      results.forEach((r, i) => {
+        html += `
+          <tr>
+            <td>${r[0]}</td>
+            <td>${r[1]}</td>
+            <td><svg id="barcode-${i}"></svg></td>
+          </tr>
+        `;
+      });
+
+      html += "</table>";
+      container.innerHTML = html;
+
+      // Generate barcodes (50% bigger)
+      results.forEach((r, i) => {
+        JsBarcode(`#barcode-${i}`, r[1], {
+          format: "CODE128",
+          displayValue: true,
+          height: 75,
+          width: 2.5,
+          margin: 10,
+          fontSize: 16
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>
