@@ -33,7 +33,8 @@ projects:
   current:
     title: "Current Projects"
     siteWeb: "Website"
-    mmo: "MMO"
+    mmo: "Massively Multiplayer Online Third Person Shooter Game"
+    rts: "Real-Time Strategy Game"
   incoming:
     title: "Incoming Projects"
     websiteForClient: "Website for a client"
