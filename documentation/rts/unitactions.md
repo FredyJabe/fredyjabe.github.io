@@ -2,6 +2,9 @@
 
 This document describes the unit `actions` mini-language and the currently available runtime behavior.
 
+Related:
+- Unit schema and fields: [UnitsFormat.md](/home/fredyjabe/Documents/BACKUP DEV/C#/Jabe RTS/Docs/UnitsFormat.md)
+
 ## File Layout
 
 - Unit definition files are loaded from `<modRoot>/units/**/*.yaml`.
@@ -35,6 +38,7 @@ All sections after `action` are optional.
 | Action | Syntax | Status | Notes |
 |---|---|---|---|
 | Damage | `damage{value=<float>}` | Implemented | Shield absorbs first; armor reduces remaining health damage with minimum 1. |
+| Wait | `wait <seconds>` or `wait{seconds=<float>}` | Implemented | Pauses a custom action sequence before executing the next subaction. Supports decimal values (example: `wait 1.5`). |
 | Teleport | `teleport @location{x=<float>;y=<float>}` | Implemented | Destination is taken from `@location{...}`. |
 | Build | `build{...}` | Parsed only | Recognized by parser/runtime dispatch but not executed. |
 | Custom Action Call | `action{action=<name>}` | Implemented | Executes named custom action from action files. |
@@ -42,7 +46,7 @@ All sections after `action` are optional.
 | Create Unit | `createUnit{unit=<unitId>;amount=<int>}` | Implemented | Queues creation after target unit's `build.buildTime`. |
 | Kill | `kill` | Implemented | Sets target unit health to 0. |
 | Remove | `remove` | Implemented | Removes unit instantly without `~onDeath`. |
-| Set Unit Stat | `setUnitStat{stat=<statName>;value=<float>}` | Implemented | Supports `health`, `maxhealth`, `shield`, `maxshield`, `energy`, `maxenergy`, `armor`. |
+| Update Unit Stat | `updateUnitStat{stat=<statName>;value=<float>;action=<SET\|ADD>}` | Implemented | `action` defaults to `SET`. Supports negative `value`. Supports `health`, `maxhealth`, `healthregen`, `shield`, `maxshield`, `shieldregen`, `energy`, `maxenergy`, `energyregen`, `armor`. |
 | Add Tag | `addTag{tag=<tagId>}` | Implemented | Adds tag to target unit. |
 | Remove Tag | `removeTag{tag=<tagId>}` | Implemented | Removes tag from target unit. |
 | Set Upgrade Level | `setUpgradeLevel{name=<upgradeName>;level=<int>}` | Implemented | Sets player's upgrade level; creates entry if missing. |
@@ -63,7 +67,7 @@ All sections after `action` are optional.
 
 | Condition | Syntax | Status | Notes |
 |---|---|---|---|
-| Compare | `compare{stat=<name>;value=<float>;compare=<mode>}` | Implemented | Modes: `atleast`, `atmost`, `equal`, `greater`, `less`. Stats: `health`, `maxhealth`, `shield`, `maxshield`, `energy`, `maxenergy`, `armor`. |
+| Compare | `compare{stat=<name>;value=<float>;compare=<mode>}` | Implemented | Modes: `atleast`, `atmost`, `equal`, `greater`, `less`. Stats: `health`, `maxhealth`, `healthregen`, `shield`, `maxshield`, `shieldregen`, `energy`, `maxenergy`, `energyregen`, `armor`. |
 | Has Tag | `hasTag{tag=<tagId>}` | Implemented | True when acting unit contains tag. |
 | Target Has Tag | `targetHasTag{tag=<tagId>}` | Implemented | Checks selected target unit tag; currently resolves to self/owner until full target routing exists. |
 | Has Resources | `hasResources{resource=<resourceId>;amount=<float>}` | Implemented | Checks owner player's resource pool for at least amount. |
@@ -79,14 +83,16 @@ All sections after `action` are optional.
 | Self | `@self` | Defined | Means the unit that executes the action. |
 | Target | `@target` | Defined | Should show a select-target cursor to the player. |
 | Area | `@area{radius=<float>}` | Defined | Should show an effect-area circle at cursor; supports `radius`. |
-| Location | `@location{x=<float>;y=<float>}` | Partially implemented | Should show a select-location cursor; currently consumed by `teleport`. |
+| Location | `@location{x=<float>;y=<float>}` | Partially implemented | Used by `teleport` and `moveOrder`; on `~onButton`, missing coordinates can be provided by an in-world click target picker. |
 | Ally | `@ally` | Planned | Not implemented yet. |
 | Enemy | `@enemy` | Planned | Not implemented yet. |
 | Owner | `@owner` | Planned | Not implemented yet. |
 
 Current implementation note:
 - Runtime currently applies action effects to the action owner unit.
-- `teleport` currently consumes coordinates from `@location{x=<float>;y=<float>}`.
+- `@location` coordinates are currently consumed by `teleport` and `moveOrder`.
+- For `~onButton`, if an action uses `@location` without `x`/`y`, the UI enters world-target picking and injects the clicked location at runtime.
+- Custom subactions inherit the caller action targetter when they do not define their own `@targetter`.
 
 ## Triggers
 
@@ -153,7 +159,7 @@ my_unit_id:
     - createUnit{unit=worker;amount=2} @self ~onButton{text=QueueWorker}
     - kill @self ~onButton{text=SelfDestruct}
     - remove @self ~onButton{text=DeleteNow}
-    - setUnitStat{stat=health;value=50} @self ~onButton{text=SetHp50}
+    - updateUnitStat{stat=health;value=50;action=SET} @self ~onButton{text=SetHp50}
     - addTag{tag=berserk} @self ~onSpawn
     - removeTag{tag=berserk} @self ~onTimer:10
     - setUpgradeLevel{name=vehicleWeapons;level=2} @self ~onSpawn
