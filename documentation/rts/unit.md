@@ -53,10 +53,10 @@ tank:
 | `size` | int | `1` | No | Clamped to minimum `1`. Used as unit footprint/selection size basis. |
 | `isVisible` | bool | `true` | No | If false, image path loading is skipped and visibility checks use false. |
 | `isSelectable` | bool | `true` | No | Controls whether the unit can be selected. |
-| `movement` | object | `{}` | No | See Movement Fields table. |
-| `build` | object | `{}` | No | See Build Fields table. |
-| `defense` | object | `{}` | No | See Defense Fields table. |
-| `graphics` | object | `{}` | No | See Graphics Fields table. |
+| `movement` | object | `{}` | No | See [Movement Fields](#movement-fields) table. |
+| `build` | object | `{}` | No | See [Build Fields](#build-fields) table. |
+| `defense` | object | `{}` | No | See [Defense Fields](#defense-fields) table. |
+| `graphics` | object | `{}` | No | See [Graphics Fields](#graphics-fields) table. |
 | `tags` | list<string> | `[]` | No | Trimmed, case-insensitive tag set at runtime. |
 | `actions` | list<string> | `[]` | No | Action DSL lines parsed via `ActionHelper.TryParse`. Invalid lines are ignored. |
 
@@ -125,7 +125,6 @@ scout:
     speed: 3.0
   defense:
     health: 60
-    armor: 0
   graphics:
     image: scout.png
   tags:
@@ -144,32 +143,23 @@ assault_mech:
   movement:
     type: Ground
     speed: 0.35
-    acceleration: 0.0
-    deceleration: 0.0
-    maxSpeed: 0.0
 
   build:
     buildTime: 12.0
 
   defense:
     health: 450
-    healthRegen: 0.0
     armor: 3
     shield: 100
-    shieldRegen: 0.0
-    energy: 80
-    energyRegen: 0.5
-    isInvulnerable: false
+    shieldRegen: 0.5
 
   graphics:
     image: assault_mech.png
-    imageScale: 1.0
     layers: 1
     frames: 4
     idle:
       start: 0
       end: 0
-      animationTime: 1.0
     move:
       start: 1
       end: 2
